@@ -42,17 +42,42 @@ class TenPuzzle:
                     return ans
         return []
 
+    def print(self, a: List[Any]):
+        # 最外の括弧を外す
+        del a[0]
+        del a[len(a) - 1]
+        for i in range(len(a) - 1, 1, -1):
+            if a[i] == "+" or a[i] == "-":
+                if (a[i - 1] == ")"):
+                    # この括弧はいらない
+                    del a[i - 1]
+                    imos = 0
+                    for j in range(i - 2, -1, -1):
+                        if a[j] == ")":
+                            imos += 1
+                        if a[j] == "(":
+                            if imos == 0:
+                                del a[j]
+                                break
+                            else:
+                                imos -= 1
+
+
+        print(''.join(a))
+        return ''.join(a)
+
+
     def solve(self):
         perm = list(itertools.permutations(self.a))
         for x in perm:
             x = list(x)
             ans = self.solver(x)
             if len(ans) != 0:
-                print(''.join(self.solver(x)))
+                self.print(ans)
                 return
         return 0
 
 
 if __name__ == "__main__":
-    puzzle = TenPuzzle(7, 26, [2, 2, 3, 3, 4, 7, 7])
+    puzzle = TenPuzzle(6, 13, [1, 2, 3, 3, 3, 9])
     puzzle.solve()
